@@ -19,6 +19,11 @@ class SampleController {
         return ResponseEntity.ok().build()
     }
 
+    @PostMapping("java")
+    fun createWithJava(@RequestBody @Valid request: SampleJavaPayload): ResponseEntity<Void> {
+        return ResponseEntity.ok().build()
+    }
+
     @ExceptionHandler
     fun handle(e: MethodArgumentNotValidException): ResponseEntity<Errors> =
         ResponseEntity.badRequest().body(

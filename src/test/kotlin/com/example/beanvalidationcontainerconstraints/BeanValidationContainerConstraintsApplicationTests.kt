@@ -23,16 +23,24 @@ class BeanValidationContainerConstraintsApplicationTests {
 
 	@Test
 	fun `should fail with two validation errors`() {
-		mockMvc.perform(post("/samples")
-			.contentType(MediaType.APPLICATION_JSON)
-			.content("""
+		invokeTest("/samples")
+	}
+
+	@Test
+	fun `should fail with two validation errors when java request body`() {
+		invokeTest("/samples/java")
+	}
+
+	fun invokeTest(endpoint: String) {
+		mockMvc.perform(post(endpoint)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content("""
     				{
     					"name": "",
     					"someMap": { "some": "" }
     				}""".trimIndent()))
-			.andDo(MockMvcResultHandlers.print())
-			.andExpect(status().isBadRequest)
-			.andExpect(jsonPath("errors", hasSize<String>(2)))
+				.andDo(MockMvcResultHandlers.print())
+				.andExpect(status().isBadRequest)
+				.andExpect(jsonPath("errors", hasSize<String>(2)))
 	}
-
 }
